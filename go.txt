@@ -1,0 +1,19 @@
+ENVIRONMENT VARIABLE
+
+A .env file is commonly used to store environment variables in a key-value 
+format. This file is used to configure applications without hardcoding 
+sensitive or environment-specific information directly into the source code.
+
+Usage in Code
+In a Go application, you can use a package like github.com/joho/godotenv 
+to load the environment variables defined in a .env file into your 
+program's environment.
+
+Benefits of Using a .env File
+****Separation of Configuration from Code: Keeps configuration details 
+out of the source code, making it easier to manage and secure.
+****Ease of Use: Simple format and easy to read and write.
+****Portability: Makes it easy to move the application between different 
+environments (development, testing, production) by just changing the .env file.
+****Security: Sensitive information like passwords and API keys are not 
+hardcoded in the source code and can be managed separately.

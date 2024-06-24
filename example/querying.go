@@ -7,13 +7,16 @@ import (
 	"woojiahao.com/gda/internal/utility"
 )
 
+// Single Row Query
 func SingleRowQuery() {
+	//connecting to the database through the pgx driver
 	connStr := utility.ConnectionString()
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		log.Fatalf("Unable to connect to database because %s", err)
 	}
 
+	//querying the databasse
 	var johnDoeId string
 	row := db.QueryRowContext(context.TODO(), `SELECT id FROM customer WHERE name = 'John Doe';`)
 	err = row.Scan(&johnDoeId)
@@ -27,6 +30,7 @@ func SingleRowQuery() {
 	}
 }
 
+// Miltiple Row Query
 func MultiRowQuery() {
 	connStr := utility.ConnectionString()
 	db, err := sql.Open("pgx", connStr)
@@ -52,6 +56,7 @@ func MultiRowQuery() {
 	log.Printf("Total order quantity per food %v", orderQuantities)
 }
 
+// Parameterised Query
 func ParameterisedQuery(target string) {
 	connStr := utility.ConnectionString()
 	db, err := sql.Open("pgx", connStr)
@@ -72,6 +77,7 @@ func ParameterisedQuery(target string) {
 	}
 }
 
+// Null Type Query
 func NullTypeQuery() {
 	connStr := utility.ConnectionString()
 	db, err := sql.Open("pgx", connStr)
@@ -95,3 +101,45 @@ func NullTypeQuery() {
 	}
 	log.Printf("Customer allergies are %v", allergies)
 }
+
+/*
+QueryRowContext()
+
+The QueryRowContext() method returns a *sql.Row type,
+which has a Scan() method to map the values returned from the database
+to variables. In our case, we are mapping the result of the SELECT
+statement to the johnDoeId variable since we expect a string result.
+
+When we successfully scan the row returned from the database,
+the variable johnDoeId will hold the id returned from the database.
+Notice that we passed a pointer reference of johnDoeId to Scan().
+If a pointer reference is unused, there will be an error.
+
+
+
+
+SPECIFYING CONTEXT
+
+In Go, contexts carry deadline and cancellation signals (among others)
+across API boundaries and between processes so that you can control
+how long a task is allowed to take.
+
+When working with databases, this context can be used to inform the
+database service to cancel a query if too much time has elapsed to
+prevent performance degradation.
+
+In the codes above, the context.TODO() method is used, which returns
+an empty context that allows the query to run for as long as it needs.
+
+
+NB: rows.Next() is a method of the Rows type, which is part of the
+database/sql package.
+
+
+    <------var allergies []sql.NullString------>
+
+This line declares a variable allergies which is a slice of sql.NullString.
+The sql.NullString type is used to handle nullable string values from
+the database. It contains a String field to hold the string value and
+a Valid field to indicate if the value is non-null.
+*/
