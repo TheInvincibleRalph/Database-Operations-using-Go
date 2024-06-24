@@ -21,3 +21,9 @@ func InsertQuery() {
 
 	ParameterisedQuery("John Adams")
 }
+
+/*
+The three primary statements used to change the data in an SQL database
+are INSERT, UPDATE, and DELETE. In all three scenarios, the ExecContext() method
+on the sql.DB type should be used to execute the queries.
+*/
