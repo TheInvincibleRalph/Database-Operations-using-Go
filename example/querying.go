@@ -18,8 +18,8 @@ func SingleRowQuery() {
 
 	//querying the databasse
 	var johnDoeId string
-	row := db.QueryRowContext(context.TODO(), `SELECT id FROM customer WHERE name = 'John Doe';`)
-	err = row.Scan(&johnDoeId)
+	row := db.QueryRowContext(context.TODO(), `SELECT id FROM customer WHERE name = 'John Doe';`) //setup or initialise a query to fing the id of John Doe
+	err = row.Scan(&johnDoeId)                                                                    //row.Scan executes the query and attempts to store the result in the memory location of the defined variable "JohnDoeId", if the query finds a matching row, "JohnDoeId" will contain the ID if John Doe, otherwise, err will contain the error value.
 	switch {
 	case err == sql.ErrNoRows:
 		log.Fatalf("Unable to retrieve anyone called 'John Doe'")
@@ -44,14 +44,14 @@ func MultiRowQuery() {
 		log.Fatalf("Database query failed because %s", err)
 	}
 
-	for rows.Next() {
+	for rows.Next() { //this line loops through the loop
 		var food string
 		var totalQuantity int
 		err = rows.Scan(&food, &totalQuantity)
 		if err != nil {
 			log.Fatalf("Failed to retrieve row because %s", err)
 		}
-		orderQuantities[food] = totalQuantity
+		orderQuantities[food] = totalQuantity //this line stores each food extracted with their corresponding values (totalQuantity) into the orderQuantitie map for each loop.
 	}
 	log.Printf("Total order quantity per food %v", orderQuantities)
 }
@@ -142,4 +142,17 @@ This line declares a variable allergies which is a slice of sql.NullString.
 The sql.NullString type is used to handle nullable string values from
 the database. It contains a String field to hold the string value and
 a Valid field to indicate if the value is non-null.
+
+
+The Scan() method takes pointers to the destination as arguments.
+This is necessary because Scan needs to modify the values of these
+ variables with the data received from the database.
+
+
+
+ QueryContext
+
+ It is used to execute a query that returns multiple rows.
+ It returns a pointer to *Row and an error if any occurs.
+
 */
